@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,6 +8,7 @@
     <!-- 上述meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <!-- Bootstrap CSS -->
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'login/css/login.css' %}" rel="stylesheet"/>
     <title>登录</title>
   </head>
   <body>
@@ -22,10 +24,10 @@
                     <label for="id_password">密码：</label>
                     <input type="password" name='password' class="form-control" id="id_password" placeholder="Password" required>
                   </div>
-                <div>
+                  <div>
                   <a href="/register/" class="text-success "><ins>新用户注册</ins></a>
                   <button type="submit" class="btn btn-primary float-right">登录</button>
-                </div>
+                  </div>
               </form>
             </div>
     </div> <!-- /container -->
