@@ -43,7 +43,7 @@ def makeKeyFiles(name, keySize):
     print()
     print('The prvate key is a %s and a %s digit number.' % (len(str(publicKey[0])),len(str(publicKey[1]))))
     print('Writing public key to file %s_privkey.txt...' % name)
-    fo = open('%s_pubkey.txt' % name, 'w')
+    fo = open('%s_privkey.txt' % name, 'w')
     fo.write('%s,%s,%s' % (keySize, privateKey[0], privateKey[1]))
     fo.close()
 if __name__ == '__main__':
