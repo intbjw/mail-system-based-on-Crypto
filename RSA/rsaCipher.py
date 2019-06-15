@@ -1,4 +1,5 @@
 # RSA Cipher
+# RSA 密码
 # http://inventwithpython.com/hacking (BSD Licensed)
 
 import sys
@@ -11,11 +12,11 @@ BYTE_SIZE = 256 # One byte has 256 different values.
 
 def main():
     # Runs a test that encrypts a message to a file or decrypts a message
-    # from a file.
-    filename = 'encrypted_file.txt' # the file to write to/read from
-    mode = 'encrypt' # set to 'encrypt' or 'decrypt'
+    filename = 'encrypted_file.txt' # 需要加密或者解密的文件
+    mode = 'decrypt' # 设置 'encrypt'加密 or 'decrypt'解密
 
     if mode == 'encrypt':
+        # 需要加密的文本
         message = '''"Journalists belong in the gutter because that is where the ruling classes throw their guilty secrets." -Gerald Priestland "The Founding Fathers gave the free press the protection it must have to bare the secrets of government and inform the people." -Hugo Black'''
         pubKeyFilename = 'al_sweigart_pubkey.txt'
         print('Encrypting and writing to %s...' % (filename))
@@ -34,14 +35,12 @@ def main():
 
 
 def getBlocksFromText(message, blockSize=DEFAULT_BLOCK_SIZE):
-    # Converts a string message to a list of block integers. Each integer
-    # represents 128 (or whatever blockSize is set to) string characters.
-
-    messageBytes = message.encode('ascii') # convert the string to bytes
+    # 将字符串转换为整数快序列，每个整数表示128个（或者设置为任意块大小）字符串字符
+    messageBytes = message.encode('ascii') # 将以ascii形式转换为二进制串
 
     blockInts = []
     for blockStart in range(0, len(messageBytes), blockSize):
-        # Calculate the block integer for this block of text
+        # 计算文件的整数数值
         blockInt = 0
         for i in range(blockStart, min(blockStart + blockSize, len(messageBytes))):
             blockInt += messageBytes[i] * (BYTE_SIZE ** (i % blockSize))
@@ -50,16 +49,13 @@ def getBlocksFromText(message, blockSize=DEFAULT_BLOCK_SIZE):
 
 
 def getTextFromBlocks(blockInts, messageLength, blockSize=DEFAULT_BLOCK_SIZE):
-    # Converts a list of block integers to the original message string.
-    # The original message length is needed to properly convert the last
-    # block integer.
+    # 将一串整数转换为源文本.
+    # 正确地转换最后一块整数块，需要原始消息的长度
     message = []
     for blockInt in blockInts:
         blockMessage = []
         for i in range(blockSize - 1, -1, -1):
             if len(message) + i < messageLength:
-                # Decode the message string for the 128 (or whatever
-                # blockSize is set to) characters from this block integer.
                 asciiNumber = blockInt // (BYTE_SIZE ** i)
                 blockInt = blockInt % (BYTE_SIZE ** i)
                 blockMessage.insert(0, chr(asciiNumber))
