@@ -2,15 +2,26 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from . import models
 from . import forms
+import hashlib
 # Create your views here.
 
-# 首页
+
+def hash_code(s, salt='mysite'):
+    h = hashlib.sha256()
+    s += salt
+    h.update(s.encode())
+    return h.hexdigest()
+
+
 def index(request):
-    pass
+    if not request.session.get('is_login', None):
+        return redirect('/login/')
     return render(request, 'login/index.html')
 
-# 登录视图
+
 def login(request):
+    if request.session.get('is_login', None):  # 不允许重复登录
+        return redirect('/index/')
     if request.method == 'POST':
         login_form = forms.UserForm(request.POST)
         message = '请检查填写的内容！'
@@ -24,7 +35,10 @@ def login(request):
                 message = '用户不存在！'
                 return render(request, 'login/login.html', locals())
 
-            if user.password == password:
+            if user.password == hash_code(password):
+                request.session['is_login'] = True
+                request.session['user_id'] = user.id
+                request.session['user_name'] = user.name
                 return redirect('/index/')
             else:
                 message = '密码不正确！'
@@ -35,7 +49,7 @@ def login(request):
     login_form = forms.UserForm()
     return render(request, 'login/login.html', locals())
 
-# 注册视图
+
 def register(request):
     if request.session.get('is_login', None):
         return redirect('/index/')
@@ -65,7 +79,7 @@ def register(request):
 
                 new_user = models.User()
                 new_user.name = username
-                new_user.password = password1
+                new_user.password = hash_code(password1)
                 new_user.email = email
                 new_user.sex = sex
                 new_user.save()
@@ -78,5 +92,9 @@ def register(request):
 
 
 def logout(request):
-    pass
+    if not request.session.get('is_login', None):
+        return redirect('/login/')
+
+    request.session.flush()
+    # del request.session['is_login']
     return redirect("/login/")
