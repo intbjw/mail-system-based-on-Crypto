@@ -49,7 +49,7 @@ def getBlocksFromText(message, blockSize=DEFAULT_BLOCK_SIZE):
 
 
 def getTextFromBlocks(blockInts, messageLength, blockSize=DEFAULT_BLOCK_SIZE):
-    # 将一串整数转换为源文本.
+    # 将一串整数转换为源文本
     # 正确地转换最后一块整数块，需要原始消息的长度
     message = []
     for blockInt in blockInts:
@@ -88,8 +88,8 @@ def decryptMessage(encryptedBlocks, messageLength, key, blockSize=DEFAULT_BLOCK_
 
 
 def readKeyFile(keyFilename):
-    # Given the filename of a file that contains a public or private key,
-    # return the key as a (n,e) or (n,d) tuple value.
+    # 给出一个文件名，并从该文件中含有公钥或者私钥
+    # 以元组的形式返回  (n,e) or (n,d)
     fo = open(keyFilename)
     content = fo.read()
     fo.close()
@@ -130,27 +130,27 @@ def readFromFileAndDecrypt(messageFilename, keyFilename):
     keySize, n, d = readKeyFile(keyFilename)
 
 
-    # Read in the message length and the encrypted message from the file.
+    # 从文件中获取文本的长度和加密的字符串
     fo = open(messageFilename)
     content = fo.read()
     messageLength, blockSize, encryptedMessage = content.split('_')
     messageLength = int(messageLength)
     blockSize = int(blockSize)
 
-    # Check that key size is greater than block size.
+    # 检查密钥的大小是否大于块的大小
     if keySize < blockSize * 8: # * 8 to convert bytes to bits
         sys.exit('ERROR: Block size is %s bits and key size is %s bits. The RSA cipher requires the block size to be equal to or less than the key size. Did you specify the correct key file and encrypted file?' % (blockSize * 8, keySize))
 
-    # Convert the encrypted message into large int values.
+    # 将加密的文本转换为大整型
     encryptedBlocks = []
     for block in encryptedMessage.split(','):
         encryptedBlocks.append(int(block))
 
-    # Decrypt the large int values.
+    # 加密这个大整数
     return decryptMessage(encryptedBlocks, messageLength, (n, d), blockSize)
 
 
-# If rsaCipher.py is run (instead of imported as a module) call
-# the main() function.
+# 程序的入口
+# 主函数
 if __name__ == '__main__':
     main()
