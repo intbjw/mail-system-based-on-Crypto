@@ -17,7 +17,7 @@ def main():
 
     if mode == 'encrypt':
         # 需要加密的文本
-        message = '''"Journalists belong in the gutter because that is where the ruling classes throw their guilty secrets." -Gerald Priestland "The Founding Fathers gave the free press the protection it must have to bare the secrets of government and inform the people." -Hugo Black'''
+        message = '''hello world!!!!!'''
         pubKeyFilename = 'al_sweigart_pubkey.txt'
         print('Encrypting and writing to %s...' % (filename))
         encryptedText = encryptAndWriteToFile(filename, pubKeyFilename, message)
@@ -64,8 +64,7 @@ def getTextFromBlocks(blockInts, messageLength, blockSize=DEFAULT_BLOCK_SIZE):
 
 
 def encryptMessage(message, key, blockSize=DEFAULT_BLOCK_SIZE):
-    # Converts the message string into a list of block integers, and then
-    # encrypts each block integer. Pass the PUBLIC key to encrypt.
+    # 将文本字符串转换为一串整数，并且加密每个整数块，通过公钥进行加密
     encryptedBlocks = []
     n, e = key
 
@@ -76,9 +75,8 @@ def encryptMessage(message, key, blockSize=DEFAULT_BLOCK_SIZE):
 
 
 def decryptMessage(encryptedBlocks, messageLength, key, blockSize=DEFAULT_BLOCK_SIZE):
-    # Decrypts a list of encrypted block ints into the original message
-    # string. The original message length is required to properly decrypt
-    # the last block. Be sure to pass the PRIVATE key to decrypt.
+    # 将加密后的整数块解密成源文本，正确的解密这个最后的整数块需要源文本的长度
+    # 确保使用私钥进行解密
     decryptedBlocks = []
     n, d = key
     for block in encryptedBlocks:
@@ -98,35 +96,34 @@ def readKeyFile(keyFilename):
 
 
 def encryptAndWriteToFile(messageFilename, keyFilename, message, blockSize=DEFAULT_BLOCK_SIZE):
-    # Using a key from a key file, encrypt the message and save it to a
-    # file. Returns the encrypted message string.
+    # 从密钥文件中获取密钥，加密文本并将它保存成文件，返回值为加密后的文本
     keySize, n, e = readKeyFile(keyFilename)
 
-    # Check that key size is greater than block size.
+    # 检查密钥的大小是否大于块的大小
     if keySize < blockSize * 8: # * 8 to convert bytes to bits
         sys.exit('ERROR: Block size is %s bits and key size is %s bits. The RSA cipher requires the block size to be equal to or less than the key size. Either decrease the block size or use different keys.' % (blockSize * 8, keySize))
 
 
-    # Encrypt the message
+    # 对文本加密
     encryptedBlocks = encryptMessage(message, (n, e), blockSize)
 
-    # Convert the large int values to one string value.
+    # 将大整数转化为字符串
     for i in range(len(encryptedBlocks)):
         encryptedBlocks[i] = str(encryptedBlocks[i])
     encryptedContent = ','.join(encryptedBlocks)
 
-    # Write out the encrypted string to the output file.
+    # 把加密后的文本写入输出文件中
     encryptedContent = '%s_%s_%s' % (len(message), blockSize, encryptedContent)
     fo = open(messageFilename, 'w')
     fo.write(encryptedContent)
     fo.close()
-    # Also return the encrypted string.
+    # 同时返回加密文本
     return encryptedContent
 
 
 def readFromFileAndDecrypt(messageFilename, keyFilename):
-    # Using a key from a key file, read an encrypted message from a file
-    # and then decrypt it. Returns the decrypted message string.
+    # 从密钥文件中获取密钥，并从文件中获取加密后的文本，然后对它进行解密
+    # 返回值为解密后的文本字符串
     keySize, n, d = readKeyFile(keyFilename)
 
 

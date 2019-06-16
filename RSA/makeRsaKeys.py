@@ -6,6 +6,7 @@ def main():
     makeKeyFiles('al_sweigart', 1024)
 
 def generateKey(keysize):
+    # 生成密钥
     print('Generating p prime...')
     p = rabinMiller.generateLargePrime(keysize)
     print('Generating q prime...')
@@ -29,6 +30,7 @@ def generateKey(keysize):
     return (publicKey, privateKey)
 
 def makeKeyFiles(name, keySize):
+    # 生成密钥文件
     if os.path.exists('%s_pubkey.txt' % (name)) or os.path.exists('%s_privkey.txt'% (name)):
         sys.exit('WARNING: The file %spubkey.txt or %s_privkey.txt already exists! Use a different name or delete these files and re- run'
                  'this program.'% (name,name))
