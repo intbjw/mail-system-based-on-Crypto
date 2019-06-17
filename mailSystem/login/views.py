@@ -5,7 +5,7 @@ from . import forms
 import hashlib
 # Create your views here.
 
-
+# 哈希运算
 def hash_code(s, salt='mysite'):
     h = hashlib.sha256()
     s += salt
@@ -16,6 +16,11 @@ def hash_code(s, salt='mysite'):
 def index(request):
     if not request.session.get('is_login', None):
         return redirect('/login/')
+    name = request.session['user_name']
+    user = models.User.objects.get(name=name)
+    user_all = user._meta.get_fields()
+    # user_all = models.User.objects.all()
+
     return render(request, 'login/index.html')
 
 
