@@ -21,7 +21,7 @@ def index(request):
     user_all = user._meta.get_fields()
     # user_all = models.User.objects.all()
 
-    return render(request, 'login/index.html')
+    return render(request, 'login/index.html', locals())
 
 
 def login(request):
@@ -103,3 +103,8 @@ def logout(request):
     request.session.flush()
     # del request.session['is_login']
     return redirect("/login/")
+
+
+def mailbox(request):
+    pass
+    return render(request, 'login/mailbox.html')

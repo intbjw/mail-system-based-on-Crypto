@@ -4,11 +4,11 @@
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Starter</title>
+  <title>{% block title %}base{% endblock %}</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="{%  static 'adminlte-2.3.11/bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
@@ -33,6 +33,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  {% block css %}{% endblock %}
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -61,11 +62,11 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="#" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      <span class="logo-mini"><b>eml</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
+      <span class="logo-lg"><b>My</b>email</span>
     </a>
 
     <!-- Header Navbar -->
@@ -93,7 +94,7 @@ desired effect
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="{%  static 'adminlte-2.3.11/dist/img/user2-160x160.jpg'%}" class="img-circle" alt="User Image">
+                        <img src="{%  static 'adminlte-2.3.11/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -213,7 +214,7 @@ desired effect
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="#" class="btn btn-default btn-flat">注销</a>
                 </div>
               </li>
             </ul>
@@ -240,7 +241,7 @@ desired effect
         <div class="pull-left info">
           <p>Alexander Pierce</p>
           <!-- Status -->
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
         </div>
       </div>
 
@@ -260,21 +261,8 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-        <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#">Link in level 2</a></li>
-            <li><a href="#">Link in level 2</a></li>
-          </ul>
-        </li>
           <li>
-          <a href="{%  static 'adminlte-2.3.11/pages/mailbox/mailbox.html' %}">
+          <a href="{%  static 'adminlte-2.3.11/pages/mailbox/login/mailbox.html' %}">
 {#              增加mailBox#}
             <i class="fa fa-envelope"></i> <span>Mailbox</span>
             <span class="pull-right-container">
@@ -292,18 +280,11 @@ desired effect
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
+   <div class="content-wrapper">
+
+    {% block breadcrumb %}{% endblock %}
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Page Header
-        <small>Optional description</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
-      </ol>
-    </section>
 
     <!-- Main content -->
     <section class="content container-fluid">
@@ -311,11 +292,14 @@ desired effect
       <!--------------------------
         | Your Page Content Here |
         -------------------------->
+        {#         主题内容全放在这里!   #}
+      {% block content %}{% endblock %}
 
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
 
   <!-- Main Footer -->
   <footer class="main-footer">
@@ -415,6 +399,8 @@ desired effect
 <!-- AdminLTE App -->
 <script src="{%  static 'adminlte-2.3.11/dist/js/adminlte.min.js' %}"></script>
 
+
+{% block script %}{% endblock %}
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
