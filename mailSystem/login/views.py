@@ -20,8 +20,8 @@ def index(request):
     user = models.User.objects.get(name=name)
     user_all = user._meta.get_fields()
     # user_all = models.User.objects.all()
-
-    return render(request, 'login/index.html', locals())
+    sendmails = models.Recipemail.objects.filter(recipient='bjw@mymail.com')
+    return render(request, 'login/index.html', {'user':user, 'sendmails':sendmails})
 
 
 def login(request):

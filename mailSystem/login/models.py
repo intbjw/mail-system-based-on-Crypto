@@ -48,6 +48,16 @@ class Sendemail(models.Model):
     affix = models.BinaryField()
     sendTime = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=flag)
+
+    def __str__(self):
+        return self.subject
+
+    class Meta:
+        ordering = ["-sendTime"]
+        verbose_name = "发件箱"
+        verbose_name_plural = "发件箱"
+
+
 class Recipemail(models.Model):
     '''
         收件箱：
@@ -72,6 +82,14 @@ class Recipemail(models.Model):
     sendTime = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField()
 
+    def __str__(self):
+        return self.subject
+
+    class Meta:
+        ordering = ["-sendTime"]
+        verbose_name = "收件箱"
+        verbose_name_plural = "收件箱"
+
 
 class adressbook(models.Model):
     '''
@@ -84,3 +102,9 @@ class adressbook(models.Model):
     address = models.CharField(max_length=50)
     uid = models.IntegerField()
 
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        verbose_name = "联系人"
+        verbose_name_plural = "联系人"
