@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from . import models
 from . import forms
 import hashlib
+
+from django.contrib import messages
+#from login import login_handler
 # Create your views here.
 
 # 哈希运算
@@ -20,8 +23,8 @@ def index(request):
     user = models.User.objects.get(name=name)
     user_all = user._meta.get_fields()
     # user_all = models.User.objects.all()
-    sendmails = models.Recipemail.objects.filter(recipient='bjw@mymail.com')
-    return render(request, 'login/index.html', {'user':user, 'sendmails':sendmails})
+    rmails = models.Recipemail.objects.filter(recipient=user.email)
+    return render(request, 'login/index.html', locals())
 
 
 def login(request):
@@ -105,6 +108,52 @@ def logout(request):
     return redirect("/login/")
 
 
-def mailbox(request):
-    pass
-    return render(request, 'login/mailbox.html')
+def readmail(request, rmail_id):
+    rmail = get_object_or_404(models.Recipemail, id=rmail_id)
+    return render(request, 'login/readmail.html', locals())
+
+
+def compose(request):
+    # if request.session.get('is_login', None):
+    #     return redirect('/index/')
+
+    if request.method == 'POST':
+        mail_form = forms.MailForm(request.POST)
+        if mail_form.is_valid():
+            subject = request.POST.get('subject')
+            recipient = request.POST.get('recipient')
+            letter = request.POST.get('letter')
+            # if password1 != password2:
+            #     message = '两次输入的密码不同！'
+            #     return render(request, 'login/register.html', locals())
+            # else:
+            #     same_name_user = models.User.objects.filter(name=username)
+            #     if same_name_user:
+            #         message = '用户名已经存在'
+            #         return render(request, 'login/register.html', locals())
+            #     same_email_user = models.User.objects.filter(email=email)
+            #     if same_email_user:
+            #         message = '该邮箱已经被注册了！'
+            #         return render(request, 'login/register.html', locals())
+            #
+            #     new_user = models.User()
+            #     new_user.name = username
+            #     new_user.password = hash_code(password1)
+            #     new_user.email = email
+            #     new_user.sex = sex
+            #     new_user.save()
+            # 条件判断
+            new_mail = models.Recipemail()
+            new_mail.subject = subject
+            new_mail.addresser = recipient
+            new_mail.recipient = recipient
+            new_mail.letter = letter
+            new_mail.status = 1
+            new_mail.save()
+            messages.success(request, "发送成功")
+            return redirect('/compose/')
+        else:
+            return render(request, 'login/compose.html', locals())
+    mail_form = forms.MailForm()
+    return render(request, 'login/compose.html', locals())
+

@@ -1,0 +1,277 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>首页</title>#}
+{#</head>#}
+{#<body>#}
+{#<h1>这仅仅是一个主页模拟！请根据实际情况接入正确的主页！</h1>#}
+{#<h1>欢迎您，{{ user }}</h1>#}
+{#<h1>昵称：{{ user.name }}</h1>#}
+{#<h1>邮箱地址{{ user.email }}</h1>#}
+{#<h1>注册时间{{ user.c_time }}</h1>#}
+{#{% for data in user_all %}#}
+{#{#    <h2>#}
+{##}
+{#    </h2>#}
+{#{% endfor %}#}
+{#<h1>此处应有邮件</h1>#}
+{#</body>#}
+{#</html>#}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}我的邮箱{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet"
+          href="{% static 'adminlet-2.3.11/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}"
+          xmlns="http://www.w3.org/1999/html">{% endblock %}
+{% block info %}
+    <div class="pull-left info">
+          <p>        </p>
+          <!-- Status -->
+          <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+        </div>
+{% endblock %}
+
+{% block breadcrumb %}
+<!-- Content Header (Page header) -->
+   <section class="content">
+      <div class="row">
+        <div class="col-md-3">
+          <a href="/index/" class="btn btn-primary btn-block margin-bottom">返回信箱</a>
+
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Folders</h3>
+
+              <div class="box-tools">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body no-padding">
+              <ul class="nav nav-pills nav-stacked">
+                <li><a href="mailbox.html"><i class="fa fa-inbox"></i> Inbox
+                  <span class="label label-primary pull-right">12</span></a></li>
+                <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
+                <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
+                <li><a href="#"><i class="fa fa-filter"></i> Junk <span class="label label-warning pull-right">65</span></a>
+                </li>
+                <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
+              </ul>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /. box -->
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Labels</h3>
+
+              <div class="box-tools">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <ul class="nav nav-pills nav-stacked">
+                <li><a href="#"><i class="fa fa-circle-o text-red"></i> Important</a></li>
+                <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Promotions</a></li>
+                <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Social</a></li>
+              </ul>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">写一封新的邮件</h3>
+            </div>
+            <!-- /.box-header -->
+              <form class="form-mail" action="/compose/" method="post">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      {{ mail_form.recipient }}
+                      {#                  <input class="form-control" placeholder="To:">#}
+                  </div>
+                  <div class="form-group">
+                      {{ mail_form.subject.label }}
+                      {{ mail_form.subject }}
+                      {#                <input class="form-control" placeholder="Subject:">#}
+                  </div>
+                  <div class="form-group">
+                      {{ mail_form.letter.label }}
+                      {{ mail_form.letter }}
+                      {#                  #}
+                      {#                    <textarea id="compose-textarea" class="form-control" style="height: 300px">#}
+                      {#                      <h1><u>Heading Of Message</u></h1>#}
+                      {#                      <h4>Subheading</h4>#}
+                      {#                      <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain#}
+                      {#                        was born and I will give you a complete account of the system, and expound the actual teachings#}
+                      {#                        of the great explorer of the truth, the master-builder of human happiness. No one rejects,#}
+                      {#                        dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know#}
+                      {#                        how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again#}
+                      {#                        is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain,#}
+                      {#                        but because occasionally circumstances occur in which toil and pain can procure him some great#}
+                      {#                        pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise,#}
+                      {#                        except to obtain some advantage from it? But who has any right to find fault with a man who#}
+                      {#                        chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that#}
+                      {#                        produces no resultant pleasure? On the other hand, we denounce with righteous indignation and#}
+                      {#                        dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so#}
+                      {#                        blinded by desire, that they cannot foresee</p>#}
+                      {#                      <ul>#}
+                      {#                        <li>List item one</li>#}
+                      {#                        <li>List item two</li>#}
+                      {#                        <li>List item three</li>#}
+                      {#                        <li>List item four</li>#}
+                      {#                      </ul>#}
+                      {#                      <p>Thank you,</p>#}
+                      {#                      <p>John Doe</p>#}
+                      {#                    </textarea>#}
+                  </div>
+                  <div class="form-group">
+
+                  </div>
+
+                  <!-- /.box-body -->
+            <div class="box-footer">
+              <div class="pull-right">
+                <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
+              </div>
+              <button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>
+            </div>
+              </form>
+              {% if messages %}
+        <script>
+            {% for msg in messages %}
+                alert('{{ msg.message }}');
+            {% endfor %}
+        </script>
+    {% endif %}
+            <!-- /.box-footer -->
+          </div>
+          <!-- /. box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+{% endblock %}
+
+{% block content %}
+    <!-- Main content -->
+{#    <section class="content">#}
+{#      <div class="row">#}
+{#        <div class="col-md-3">#}
+{#          <a href="compose.html" class="btn btn-primary btn-block margin-bottom">写邮件</a>#}
+{##}
+{#          <div class="box box-solid">#}
+{#            <div class="box-header with-border">#}
+{#              <h3 class="box-title">Folders</h3>#}
+{##}
+{#              <div class="box-tools">#}
+{#                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>#}
+{#                </button>#}
+{#              </div>#}
+{#            </div>#}
+{#            <div class="box-body no-padding">#}
+{#              <ul class="nav nav-pills nav-stacked">#}
+{#                <li><a href="mailbox.html"><i class="fa fa-inbox"></i> Inbox#}
+{#                  <span class="label label-primary pull-right">12</span></a></li>#}
+{#                <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>#}
+{#                <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>#}
+{#                <li><a href="#"><i class="fa fa-filter"></i> Junk <span class="label label-warning pull-right">65</span></a>#}
+{#                </li>#}
+{#                <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>#}
+{#              </ul>#}
+{#            </div>#}
+{#            <!-- /.box-body -->#}
+{#          </div>#}
+{#          <!-- /. box -->#}
+{#          <div class="box box-solid">#}
+{#            <div class="box-header with-border">#}
+{#              <h3 class="box-title">Labels</h3>#}
+{##}
+{#              <div class="box-tools">#}
+{#                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>#}
+{#                </button>#}
+{#              </div>#}
+{#            </div>#}
+{#            <div class="box-body no-padding">#}
+{#              <ul class="nav nav-pills nav-stacked">#}
+{#                <li><a href="#"><i class="fa fa-circle-o text-red"></i> Important</a></li>#}
+{#                <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Promotions</a></li>#}
+{#                <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Social</a></li>#}
+{#              </ul>#}
+{#            </div>#}
+{#            <!-- /.box-body -->#}
+{#          </div>#}
+{#          <!-- /.box -->#}
+{#        </div>#}
+{#        <!-- /.col -->#}
+{#        <div class="col-md-9">#}
+{#          <div class="box box-primary">#}
+{#            <div class="box-header with-border">#}
+{#              <h3 class="box-title">读邮件</h3>#}
+{##}
+{##}
+{#            </div>#}
+{#            <!-- /.box-header -->#}
+{#            <div class="box-body no-padding">#}
+{#              <div class="mailbox-read-info">#}
+{#                <h3>{{ rmail.subject }}</h3>#}
+{#                <h5>From: {{ rmail.addresser }}#}
+{#                  <span class="mailbox-read-time pull-right">15 Feb. 2016 11:03 PM</span></h5>#}
+{#              </div>#}
+{#              <!-- /.mailbox-read-info -->#}
+{#              <div class="mailbox-controls with-border text-center">#}
+{#                <div class="btn-group">#}
+{#                  <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="Delete">#}
+{#                    <i class="fa fa-trash-o"></i></button>#}
+{#                  <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="Reply">#}
+{#                    <i class="fa fa-reply"></i></button>#}
+{#                  <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="Forward">#}
+{#                    <i class="fa fa-share"></i></button>#}
+{#                </div>#}
+{#                <!-- /.btn-group -->#}
+{#                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" title="Print">#}
+{#                  <i class="fa fa-print"></i></button>#}
+{#              </div>#}
+{#              <!-- /.mailbox-controls -->#}
+{#              <div class="mailbox-read-message">#}
+{#                {{ rmail.letter }}#}
+{#              </div>#}
+{#              <!-- /.mailbox-read-message -->#}
+{#            </div>#}
+{#            <!-- /.box-body -->#}
+{#            <div class="box-footer">#}
+{##}
+{#            </div>#}
+{#            <!-- /.box-footer -->#}
+{#            <div class="box-footer">#}
+{#              <div class="pull-right">#}
+{#                <button type="button" class="btn btn-default"><i class="fa fa-reply"></i> Reply</button>#}
+{#                <button type="button" class="btn btn-default"><i class="fa fa-share"></i> Forward</button>#}
+{#              </div>#}
+{#              <button type="button" class="btn btn-default"><i class="fa fa-trash-o"></i> Delete</button>#}
+{#              <button type="button" class="btn btn-default"><i class="fa fa-print"></i> 验证</button>#}
+{#            </div>#}
+{#            <!-- /.box-footer -->#}
+{#          </div>#}
+{#          <!-- /. box -->#}
+{#        </div>#}
+{#        <!-- /.col -->#}
+{#      </div>#}
+{#      <!-- /.row -->#}
+{#    </section>#}
+{% endblock %}
+<!-- /.content -->
+
+
+{% block script %}
+{% endblock %}

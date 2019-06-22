@@ -31,8 +31,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <![endif]-->
 
   <!-- Google Font -->
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   {% block css %}{% endblock %}
 </head>
 <!--
@@ -83,10 +81,10 @@ desired effect
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>
-              <span class="label label-success">4</span>
+              <span class="label label-success"></span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
+              <li class="header"></li>
               <li>
                 <!-- inner menu: contains the messages -->
                 <ul class="menu">
@@ -109,7 +107,7 @@ desired effect
                 </ul>
                 <!-- /.menu -->
               </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
+
             </ul>
           </li>
           <!-- /.messages-menu -->
@@ -119,7 +117,7 @@ desired effect
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
+              <span class="label label-warning"></span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have 10 notifications</li>
@@ -142,7 +140,7 @@ desired effect
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
-              <span class="label label-danger">9</span>
+              <span class="label label-danger"></span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have 9 tasks</li>
@@ -154,7 +152,7 @@ desired effect
                       <!-- Task title and progress text -->
                       <h3>
                         Design some buttons
-                        <small class="pull-right">20%</small>
+                        <small class="pull-right"></small>
                       </h3>
                       <!-- The progress bar -->
                       <div class="progress xs">
@@ -263,14 +261,11 @@ desired effect
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
           <li>
-          <a href="{%  static 'adminlte-2.3.11/pages/mailbox/login/mailbox.html' %}">
+          <a href="/index/">
 {#              增加mailBox#}
             <i class="fa fa-envelope"></i> <span>Mailbox</span>
             <span class="pull-right-container">
 {#                显示标签#}
-              <small class="label pull-right bg-yellow">12</small>
-              <small class="label pull-right bg-green">16</small>
-              <small class="label pull-right bg-red">5</small>
             </span>
           </a>
         </li>

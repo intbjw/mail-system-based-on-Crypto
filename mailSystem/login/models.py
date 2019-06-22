@@ -43,7 +43,7 @@ class Sendemail(models.Model):
     )
     subject = models.CharField(max_length=50)
     recipient = models.CharField(max_length=50)
-    uid = models.IntegerField()
+    uid = models.IntegerField(unique=False)
     letter = models.CharField(max_length=1000)
     affix = models.BinaryField()
     sendTime = models.DateTimeField(auto_now_add=True)

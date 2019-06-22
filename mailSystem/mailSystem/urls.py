@@ -24,5 +24,6 @@ urlpatterns = [
     path('register/', views.register),
     path('logout/', views.logout),
     path('captcha/', include('captcha.urls')),
-    path('mailbox/', views.mailbox),
+    path('readmail/',include('login.urls')),
+    path('compose/',views.compose)
 ]
