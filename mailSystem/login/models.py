@@ -108,3 +108,7 @@ class adressbook(models.Model):
     class Meta:
         verbose_name = "联系人"
         verbose_name_plural = "联系人"
+
+class PublicKey(models.Model):
+    user = models.CharField(max_length=50)
+    publicKey = models.BinaryField()

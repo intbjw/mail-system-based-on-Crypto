@@ -3,9 +3,12 @@ from django.shortcuts import redirect
 from . import models
 from . import forms
 import hashlib
-
+import login.RSA as rsa
+import login.RSAmakeKey as rsamake
 from django.contrib import messages
-#from login import login_handler
+
+
+# from login import login_handler
 # Create your views here.
 
 # 哈希运算
@@ -91,7 +94,13 @@ def register(request):
                 new_user.email = email
                 new_user.sex = sex
                 new_user.save()
-
+                rsamake.make_my_rsa(username)
+                new_key = models.PublicKey()
+                with open(username + '-public.pem', 'rb') as f:
+                    public_key = f.read()
+                new_key.user = username
+                new_key.publicKey = public_key
+                new_key.save()
                 return redirect('/login/')
         else:
             return render(request, 'login/register.html', locals())
@@ -110,6 +119,20 @@ def logout(request):
 
 def readmail(request, rmail_id):
     rmail = get_object_or_404(models.Recipemail, id=rmail_id)
+    request.id = rmail_id
+    print(request.session['user_name'])
+    mail = models.Recipemail.objects.get(id=rmail_id)
+    name = mail.addresser
+    i = name.find('@')
+    print(i)
+    user = models.PublicKey.objects.get(user=name[:3])
+    with open('bjw-private.pem', 'rb') as f:
+        public_key = f.read()
+    sign = models.Recipemail.objects.get(id=rmail_id)
+    if rsa.rsa_verify(sign.affix,sign.letter.encode('utf-8'),public_key):
+        messages.success(request, "验证成功")
+    else:
+        messages.success(request, "验证失败")
     return render(request, 'login/readmail.html', locals())
 
 
@@ -123,31 +146,16 @@ def compose(request):
             subject = request.POST.get('subject')
             recipient = request.POST.get('recipient')
             letter = request.POST.get('letter')
-            # if password1 != password2:
-            #     message = '两次输入的密码不同！'
-            #     return render(request, 'login/register.html', locals())
-            # else:
-            #     same_name_user = models.User.objects.filter(name=username)
-            #     if same_name_user:
-            #         message = '用户名已经存在'
-            #         return render(request, 'login/register.html', locals())
-            #     same_email_user = models.User.objects.filter(email=email)
-            #     if same_email_user:
-            #         message = '该邮箱已经被注册了！'
-            #         return render(request, 'login/register.html', locals())
-            #
-            #     new_user = models.User()
-            #     new_user.name = username
-            #     new_user.password = hash_code(password1)
-            #     new_user.email = email
-            #     new_user.sex = sex
-            #     new_user.save()
-            # 条件判断
+            # 验证
+            name = request.session['user_name']
             new_mail = models.Recipemail()
             new_mail.subject = subject
             new_mail.addresser = recipient
             new_mail.recipient = recipient
             new_mail.letter = letter
+            with open(name + '-private.pem','rb') as f:
+                private_key = f.read()
+            new_mail.affix = rsa.rsa_sign(letter.encode(encoding='utf-8'),private_key)
             new_mail.status = 1
             new_mail.save()
             messages.success(request, "发送成功")
